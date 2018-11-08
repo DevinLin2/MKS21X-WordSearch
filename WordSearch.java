@@ -47,6 +47,23 @@ public class WordSearch{
    * and the board is NOT modified.
    */
   public boolean addWordHorizontal(String word,int row, int col){
+    char[][] newBoard = data;
+    String temp = word;
+    int place = 0;
+    if (col+word.length() <= data[row].length){
+      for (int i=col;i<temp.length() + col ;i++){
+        if ( data[row][i] == '_' || Character.toString( data[row][i] ).equals( temp.substring (place,place+1) ) ) {
+          data[row][i]=temp.charAt(place);
+          place++;
+        }else{
+          data=newBoard;
+          return false;
+        }
+      }
+      return true;
+    }
+    data=newBoard;
+    return false;
   }
   /**Attempts to add a given word to the specified position of the WordGrid.
    *The word is added from top to bottom, must fit on the WordGrid, and must
@@ -60,5 +77,21 @@ public class WordSearch{
    *and the board is NOT modified.
    */
    public boolean addWordVertical(String word,int row, int col){
+     char[][] newBoard = data;
+    int place = 0;
+    if (row+word.length() <= data.length){
+      for (int i=row;i<temp.length() + row ;i++){
+        if ( data[i][col] == '_' || Character.toString( data[i][col] ).equals( temp.substring (place,place+1) ) ) {
+          data[i][col]=temp.charAt(place);
+          place++;
+        }else{
+          data=newBoard;
+          return false;
+        }
+      }
+      return true;
+    }
+    data=newBoard;
+    return false;
   }
 }
