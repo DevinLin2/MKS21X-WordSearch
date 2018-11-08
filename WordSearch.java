@@ -77,7 +77,8 @@ public class WordSearch{
    *and the board is NOT modified.
    */
    public boolean addWordVertical(String word,int row, int col){
-     char[][] newBoard = data;
+    char[][] newBoard = data;
+    String temp = word;
     int place = 0;
     if (row+word.length() <= data.length){
       for (int i=row;i<temp.length() + row ;i++){
