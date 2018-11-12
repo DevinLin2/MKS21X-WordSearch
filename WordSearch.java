@@ -23,6 +23,8 @@ public class WordSearch{
     File f = new file(fileName);
     Scanner in = new Scanner(f);
     String word = "";
+    randgen = new Random();
+    seed = randgen.nextInt();
     while(in.hasNext()){
       String word = in.next();
       wordsToAdd.add(word);
@@ -36,6 +38,21 @@ public class WordSearch{
     addAllWords();
   }
   public WordSearch( int rows, int cols, String fileName, int randSeed){
+    File f = new file(fileName);
+    Scanner in = new Scanner(f);
+    String word = "";
+    seed = randSeed;
+    while(in.hasNext()){
+      String word = in.next();
+      wordsToAdd.add(word);
+    }
+    data = new char[rows][cols];
+    for (int row = 0; row < data.length;row++){
+      for (int col = 0; col < data[row].length;col++){
+        data[row][col]='_';
+      }
+    }
+    addAllWords();
   }
   /**Set all values in the WordSearch to underscores'_'*/
   private void clear(){
