@@ -67,12 +67,15 @@ public class WordSearch{
   *separated by newlines.
   */
   public String toString(){
-    String s = "";
+    String s = "|";
     for (int row = 0;row<data.length;row++){
       for (int col=0;col<data[row].length;col++){
         s = s + data[row][col] + " ";
       }
-      s = s + "\n";
+      s = s + "|" + "\n";
+    }
+    for (int i = 0; i < wordsAdded.size(); i++){
+      s = s + wordsAdded.get(i) + ",";
     }
     return s;
   }
