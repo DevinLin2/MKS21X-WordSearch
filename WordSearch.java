@@ -93,11 +93,6 @@ public class WordSearch{
   *        OR there are overlapping letters that do not match
   */
   private boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
-    /*[rowIncrement,colIncrement] examples:
-    *[-1,1] would add up and the right because (row -1 each time, col + 1 each time)
-    *[ 1,0] would add downwards because (row+1), with no col change
-    *[ 0,-1] would add towards the left because (col - 1), with no row change
-    */
     char[][] newBoard = data;
     int index = 0;
     int columnIndex = col;
@@ -120,5 +115,21 @@ public class WordSearch{
     return false;
   }
   private void addAllWords(){
+    randgen = new Random();
+    int randIndex = randgen.nextInt() % wordsToAdd.size();
+    int rowIncrement = randgen.nextInt() % 2;
+    int colIncrement = randgen.nextInt() % 2;
+    int row = randgen.nextInt() % data.length;
+    int col = randgen.nextInt() % data[0].length;
+    int addAttempts = 20;
+    while (addAttempts > 0 && wordsToAdd.size > 0){ //ramamber that addwords retruns a boolean
+      if (addWord(wordsToAdd.get(randIndex), row, col, rowIncrement, colIncrement)){
+        addAttempts = 20;
+        wordsAdded.add(wordsToAdd.remove(wordsToAdd.get(randIndex)));
+      } else {
+        addAttempts --;
+        addWord(wordsToAdd.get(randIndex), row + randgen.nextInt() % 2, col + randgen.nextInt() % 2, rowIncrement, colIncrement);
+      }
+    }
   }
 }
