@@ -19,7 +19,7 @@ public class WordSearch{
   *@param col is the starting width of the WordSearch
   *@param fileName is the file from which we are reading the words from
   */
-  public WordSearch( int rows, int cols, String fileName){
+  public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
     File f = new file(fileName);
     Scanner in = new Scanner(f);
     String word = "";
@@ -37,7 +37,7 @@ public class WordSearch{
     }
     addAllWords();
   }
-  public WordSearch( int rows, int cols, String fileName, int randSeed){
+  public WordSearch(int rows, int cols, String fileName, int randSeed) throws FileNotFoundException {
     File f = new file(fileName);
     Scanner in = new Scanner(f);
     String word = "";
@@ -98,6 +98,26 @@ public class WordSearch{
     *[ 1,0] would add downwards because (row+1), with no col change
     *[ 0,-1] would add towards the left because (col - 1), with no row change
     */
+    char[][] newBoard = data;
+    int index = 0;
+    int columnIndex = col;
+    int rowIndex = row;
+    if (col + word.length() <= data[row].length && row + word.length() <= data.length){ //checks if word is in bounds if starting from row/col 0 subtract 1 from both cases
+      for (int i = 0; i < word.length(); i++){
+        if (data[rowIndex][columnIndex] == '_' || Character.toString(data[rowIndex][columnIndex]).equals(word.substring(index, index + 1))){
+          data[rowIndex][columnIndex] = word.charAt(index);
+          index ++;
+          columnIndex += colIncrement;
+          rowIndex += rowIncrement;
+        } else {
+          data = newBoard;
+          return false;
+        }
+      }
+      return true;
+    }
+    data = newBoard;
+    return false;
   }
   private void addAllWords(){
   }
