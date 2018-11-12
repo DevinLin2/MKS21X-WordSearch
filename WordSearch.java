@@ -1,3 +1,8 @@
+import java.util.random;
+import java.util.scanner;
+import java.util.arraylist;
+import java.io.file;
+import java.io.filenotfoundexception;
 public class WordSearch{
   private char[][]data;
   /**Initialize the grid to the size specified
@@ -5,6 +10,14 @@ public class WordSearch{
     *@param row is the starting height of the WordSearch
     *@param col is the starting width of the WordSearch
     */
+  //the random seed used to produce this WordSearch
+  private int seed;
+  //a random object to unify random calls
+  private Random randgen;
+  //all words from a text file get added to wordsToAdd, indicating that they have not yet been added
+  private ArrayList<String>wordsToAdd;
+  //all words that were successfully added get moved into wordsAdded.
+  private ArrayList<String>wordsAdded;
   public WordSearch(int rows,int cols){
     data = new char[rows][cols];
     for (int row = 0; row < data.length;row++){
