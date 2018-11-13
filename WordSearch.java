@@ -1,8 +1,9 @@
-import java.util.random;
-import java.util.scanner;
-import java.util.arraylist;
-import java.io.file;
-import java.io.filenotfoundexception;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.*;
 public class WordSearch{
   private char[][]data;
   //the random seed used to produce this WordSearch
@@ -10,9 +11,9 @@ public class WordSearch{
   //a random object to unify random calls
   private Random randgen;
   //all words from a text file get added to wordsToAdd, indicating that they have not yet been added
-  private ArrayList<String>wordsToAdd;
+  private ArrayList<String> wordsToAdd;
   //all words that were successfully added get moved into wordsAdded.
-  private ArrayList<String>wordsAdded;
+  private ArrayList<String> wordsAdded;
   /**Initialize the grid to the size specified
   *and fill all of the positions with '_'
   *@param row is the starting height of the WordSearch
@@ -20,13 +21,15 @@ public class WordSearch{
   *@param fileName is the file from which we are reading the words from
   */
   public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
-    File f = new file(fileName);
+    File f = new File(fileName);
     Scanner in = new Scanner(f);
     String word = "";
     randgen = new Random();
     seed = randgen.nextInt();
+    wordsToAdd = new ArrayList<String>();
+    wordsAdded = new ArrayList<String>();
     while(in.hasNext()){
-      String word = in.next();
+      word = in.next();
       wordsToAdd.add(word);
     }
     data = new char[rows][cols];
@@ -38,12 +41,14 @@ public class WordSearch{
     addAllWords();
   }
   public WordSearch(int rows, int cols, String fileName, int randSeed) throws FileNotFoundException {
-    File f = new file(fileName);
+    File f = new File(fileName);
     Scanner in = new Scanner(f);
     String word = "";
     seed = randSeed;
+    wordsToAdd = new ArrayList<String>();
+    wordsAdded = new ArrayList<String>();
     while(in.hasNext()){
-      String word = in.next();
+      word = in.next();
       wordsToAdd.add(word);
     }
     data = new char[rows][cols];
@@ -67,8 +72,9 @@ public class WordSearch{
   *separated by newlines.
   */
   public String toString(){
-    String s = "|";
+    String s = "";
     for (int row = 0;row<data.length;row++){
+      s += "|";
       for (int col=0;col<data[row].length;col++){
         s = s + data[row][col] + " ";
       }
@@ -116,19 +122,30 @@ public class WordSearch{
   }
   private void addAllWords(){
     randgen = new Random();
-    int randIndex = randgen.nextInt() % wordsToAdd.size();
-    int rowIncrement = randgen.nextInt() % 2;
-    int colIncrement = randgen.nextInt() % 2;
-    int row = randgen.nextInt() % data.length;
-    int col = randgen.nextInt() % data[0].length;
+    int randIndex = randgen.nextInt(seed) % wordsToAdd.size();
+    if (randIndex < 0){
+      randIndex = randIndex * -1;
+    }
+    int rowIncrement = randgen.nextInt(seed) % 2;
+    int colIncrement = randgen.nextInt(seed) % 2;
+    int row = randgen.nextInt(seed) % data.length;
+    int col = randgen.nextInt(seed) % data[0].length;
+    if (row < 0){
+      row = row * -1;
+    }
+    if (col < 0){
+      col = col * -1;
+    }
     int addAttempts = 20;
-    while (addAttempts > 0 && wordsToAdd.size > 0){ //ramamber that addwords retruns a boolean
-      if (addWord(wordsToAdd.get(randIndex), row, col, rowIncrement, colIncrement)){
+    while (addAttempts > 0 && wordsToAdd.size() > 0){ //remember that addwords retruns a boolean
+      String value = wordsToAdd.get(randIndex);
+      if (addWord(value, row, col, rowIncrement, colIncrement)){
         addAttempts = 20;
-        wordsAdded.add(wordsToAdd.remove(wordsToAdd.get(randIndex)));
+        wordsAdded.add(wordsToAdd.remove(randIndex));
+        randIndex = randgen.nextInt() % wordsToAdd.size();
       } else {
         addAttempts --;
-        addWord(wordsToAdd.get(randIndex), row + randgen.nextInt() % 2, col + randgen.nextInt() % 2, rowIncrement, colIncrement);
+        addWord(value, row + randgen.nextInt() % 2, col + randgen.nextInt() % 2, rowIncrement, colIncrement);
       }
     }
   }
