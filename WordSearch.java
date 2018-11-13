@@ -38,7 +38,7 @@ public class WordSearch{
         data[row][col]='_';
       }
     }
-    addAllWords();
+    //addAllWords();
   }
   public WordSearch(int rows, int cols, String fileName, int randSeed) throws FileNotFoundException {
     File f = new File(fileName);
@@ -57,7 +57,7 @@ public class WordSearch{
         data[row][col]='_';
       }
     }
-    addAllWords();
+    //addAllWords();
   }
   /**Set all values in the WordSearch to underscores'_'*/
   private void clear(){
@@ -98,7 +98,7 @@ public class WordSearch{
   *        false when: the word doesn't fit, OR  rowchange and colchange are both 0,
   *        OR there are overlapping letters that do not match
   */
-  private boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
+  public boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
     char[][] newBoard = data;
     int index = 0;
     int columnIndex = col;
@@ -120,7 +120,7 @@ public class WordSearch{
     data = newBoard;
     return false;
   }
-  private void addAllWords(){
+  public void addAllWords(){
     randgen = new Random();
     int randIndex = randgen.nextInt(seed) % wordsToAdd.size();
     if (randIndex < 0){
