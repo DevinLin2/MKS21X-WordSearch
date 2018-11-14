@@ -20,44 +20,52 @@ public class WordSearch{
   *@param col is the starting width of the WordSearch
   *@param fileName is the file from which we are reading the words from
   */
-  public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
-    File f = new File(fileName);
-    Scanner in = new Scanner(f);
-    String word = "";
-    randgen = new Random();
-    seed = randgen.nextInt();
-    wordsToAdd = new ArrayList<String>();
-    wordsAdded = new ArrayList<String>();
-    while(in.hasNext()){
-      word = in.next();
-      wordsToAdd.add(word);
-    }
-    data = new char[rows][cols];
-    for (int row = 0; row < data.length;row++){
-      for (int col = 0; col < data[row].length;col++){
-        data[row][col]='_';
+  public WordSearch(int rows, int cols, String fileName){
+    try {
+      File f = new File(fileName);
+      Scanner in = new Scanner(f);
+      String word = "";
+      randgen = new Random();
+      seed = randgen.nextInt();
+      wordsToAdd = new ArrayList<String>();
+      wordsAdded = new ArrayList<String>();
+      while(in.hasNext()){
+        word = in.next();
+        wordsToAdd.add(word);
       }
+      data = new char[rows][cols];
+      for (int row = 0; row < data.length;row++){
+        for (int col = 0; col < data[row].length;col++){
+          data[row][col]='_';
+        }
+      }
+      //addAllWords();
+    } catch (FileNotFoundException e){
+      System.out.println("file not found");
     }
-    //addAllWords();
   }
-  public WordSearch(int rows, int cols, String fileName, int randSeed) throws FileNotFoundException {
-    File f = new File(fileName);
-    Scanner in = new Scanner(f);
-    String word = "";
-    seed = randSeed;
-    wordsToAdd = new ArrayList<String>();
-    wordsAdded = new ArrayList<String>();
-    while(in.hasNext()){
-      word = in.next();
-      wordsToAdd.add(word);
-    }
-    data = new char[rows][cols];
-    for (int row = 0; row < data.length;row++){
-      for (int col = 0; col < data[row].length;col++){
-        data[row][col]='_';
+  public WordSearch(int rows, int cols, String fileName, int randSeed){
+    try {
+      File f = new File(fileName);
+      Scanner in = new Scanner(f);
+      String word = "";
+      seed = randSeed;
+      wordsToAdd = new ArrayList<String>();
+      wordsAdded = new ArrayList<String>();
+      while(in.hasNext()){
+        word = in.next();
+        wordsToAdd.add(word);
       }
+      data = new char[rows][cols];
+      for (int row = 0; row < data.length;row++){
+        for (int col = 0; col < data[row].length;col++){
+          data[row][col]='_';
+        }
+      }
+      //addAllWords();
+    } catch (FileNotFoundException e){
+      System.out.println("file not found");
     }
-    //addAllWords();
   }
   /**Set all values in the WordSearch to underscores'_'*/
   private void clear(){
