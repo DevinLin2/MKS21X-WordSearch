@@ -1,8 +1,8 @@
 public class Driver_Test {
 
-  public static void main(String[] args) {
+  public static void main(String[] args){
 
-    WordSearch WSe = new WordSearch(10,14);
+    WordSearch WSe = new WordSearch(10,14,"words.txt");
     System.out.println("WordSearch WSe = new WordSearch(10,14,\"words.txt\")");
     System.out.println(WSe);
     /*
@@ -844,12 +844,7 @@ public class Driver_Test {
     */
 
     if(args.length == 2) {
-      try{
-        WordSearch WSe2 = new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),"words.txt");
-      } catch (FileNotFoundException e){
-        System.out.println("you messed up");
-      }
-
+      WordSearch WSe2 = new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),"words.txt");
       System.out.println("WordSearch WSe2 = new WordSearch(args[0],args[1],\"words.txt\")");
       System.out.println(WSe2);
       /*
