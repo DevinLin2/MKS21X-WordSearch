@@ -113,10 +113,10 @@ public class WordSearch{
     if ((rowIncrement == 0 && colIncrement == 0) || row < 0 || col < 0){
       return false;
     }
-    if (row + (rowIncrement * word.length()) + 1 < 0 || row + (rowIncrement * word.length()) + 1 > data.length){
+    if (row + (rowIncrement * word.length()) + 1 < 0 || row + (rowIncrement * word.length()) - 1 > data.length){
       return false;
     }
-    if (col + (colIncrement * word.length()) + 1 < 0 || col + (colIncrement * word.length()) + 1 > data[row].length){
+    if (col + (colIncrement * word.length()) + 1 < 0 || col + (colIncrement * word.length()) - 1 > data[row].length){
       return false;
     }
     for (int i = 0; i < word.length(); i++){
