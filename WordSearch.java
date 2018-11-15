@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.*;
 public class WordSearch{
-  private char[][]data;
+  private char[][] data;
   //the random seed used to produce this WordSearch
   private int seed;
   //a random object to unify random calls
@@ -107,26 +107,39 @@ public class WordSearch{
   *        OR there are overlapping letters that do not match
   */
   public boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
-    char[][] newBoard = data;
-    int index = 0;
     int columnIndex = col;
     int rowIndex = row;
-    if (col + word.length() <= data[row].length && row + word.length() <= data.length){ //checks if word is in bounds if starting from row/col 0 subtract 1 from both cases
-      for (int i = 0; i < word.length(); i++){
-        if (data[rowIndex][columnIndex] == '_' || Character.toString(data[rowIndex][columnIndex]).equals(word.substring(index, index + 1))){
-          data[rowIndex][columnIndex] = word.charAt(index);
-          index ++;
-          columnIndex += colIncrement;
-          rowIndex += rowIncrement;
-        } else {
-          data = newBoard;
-          return false;
-        }
-      }
-      return true;
+    boolean addOrNo = false;
+    if ((rowIncrement == 0 && colIncrement == 0) || row < 0 || col < 0){
+      return false;
     }
-    data = newBoard;
-    return false;
+    if (row + (rowIncrement * word.length()) + 1 < 0 || row + (rowIncrement * word.length()) + 1 > data.length){
+      return false;
+    }
+    if (col + (colIncrement * word.length()) + 1 < 0 || col + (colIncrement * word.length()) + 1 > data[row].length){
+      return false;
+    }
+    for (int i = 0; i < word.length(); i++){
+      if (data[rowIndex][columnIndex] == '_' || Character.toString(data[rowIndex][columnIndex]).equals(word.substring(i,i + 1))){
+        addOrNo = true;
+        rowIndex += rowIncrement;
+        columnIndex += colIncrement;
+      } else {
+        return false;
+      }
+    }
+    columnIndex = col;
+    rowIndex = row;
+    if (addOrNo){
+      for (int i = 0; i < word.length(); i++){
+        data[rowIndex][columnIndex] = word.charAt(i);
+        columnIndex += colIncrement;
+        rowIndex += rowIncrement;
+      }
+    } else {
+      return false;
+    }
+    return true;
   }
   public void addAllWords(){
     randgen = new Random();
