@@ -106,7 +106,7 @@ public class WordSearch{
   *        false when: the word doesn't fit, OR  rowchange and colchange are both 0,
   *        OR there are overlapping letters that do not match
   */
-  public boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
+  private boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
     int columnIndex = col;
     int rowIndex = row;
     boolean addOrNo = false;
@@ -141,7 +141,7 @@ public class WordSearch{
     }
     return true;
   }
-  public void addAllWords(){
+  private void addAllWords(){
     randgen = new Random();
     int randIndex = randgen.nextInt(seed) % wordsToAdd.size();
     if (randIndex < 0){
