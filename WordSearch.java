@@ -26,7 +26,7 @@ public class WordSearch{
       Scanner in = new Scanner(f);
       String word = "";
       randgen = new Random();
-      seed = randgen.nextInt();
+      seed = Math.abs(randgen.nextInt() % 10000);
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
       while(in.hasNext()){
@@ -49,7 +49,7 @@ public class WordSearch{
       File f = new File(fileName);
       Scanner in = new Scanner(f);
       String word = "";
-      seed = randSeed;
+      seed = randSeed % 10000;
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
       while(in.hasNext()){
@@ -62,7 +62,7 @@ public class WordSearch{
           data[row][col]='_';
         }
       }
-      //addAllWords();
+      addAllWords();
     } catch (FileNotFoundException e){
       System.out.println("file not found");
     }
@@ -106,7 +106,7 @@ public class WordSearch{
   *        false when: the word doesn't fit, OR  rowchange and colchange are both 0,
   *        OR there are overlapping letters that do not match
   */
-  private boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
+  public boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
     int columnIndex = col;
     int rowIndex = row;
     boolean addOrNo = false;
@@ -141,29 +141,21 @@ public class WordSearch{
     }
     return true;
   }
-  private void addAllWords(){
+  public void addAllWords(){
     randgen = new Random();
-    int randIndex = randgen.nextInt(seed) % wordsToAdd.size();
-    if (randIndex < 0){
-      randIndex = randIndex * -1;
-    }
-    int rowIncrement = randgen.nextInt(seed) % 2;
-    int colIncrement = randgen.nextInt(seed) % 2;
-    int row = randgen.nextInt(seed) % data.length;
-    int col = randgen.nextInt(seed) % data[0].length;
-    if (row < 0){
-      row = row * -1;
-    }
-    if (col < 0){
-      col = col * -1;
-    }
+    int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
+    System.out.println(randIndex);
+    int rowIncrement = randgen.nextInt() % 2;
+    int colIncrement = randgen.nextInt() % 2;
+    int row = Math.abs(randgen.nextInt() % data.length);
+    int col = Math.abs(randgen.nextInt() % data[0].length);
     int addAttempts = 20;
     while (addAttempts > 0 && wordsToAdd.size() > 0){ //remember that addwords retruns a boolean
       String value = wordsToAdd.get(randIndex);
       if (addWord(value, row, col, rowIncrement, colIncrement)){
         addAttempts = 20;
         wordsAdded.add(wordsToAdd.remove(randIndex));
-        randIndex = randgen.nextInt() % wordsToAdd.size();
+        randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
       } else {
         addAttempts --;
         addWord(value, row + randgen.nextInt() % 2, col + randgen.nextInt() % 2, rowIncrement, colIncrement);
