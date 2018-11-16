@@ -148,7 +148,7 @@ public class WordSearch{
     int addAttempts = 50;
     //System.out.println("row: " + row);
     //System.out.println("col: " + col);
-    while (addAttempts > 0 && wordsToAdd.size() > 0){ //remember that addwords retruns a boolean
+    while (wordsToAdd.size() > 0){ //remember that addwords retruns a boolean
       //System.out.println("wordsToAdd.size(): " + wordsToAdd.size());
       int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
       String value = wordsToAdd.get(randIndex);
@@ -160,7 +160,6 @@ public class WordSearch{
         addAttempts = 50;
         wordsAdded.add(wordsToAdd.remove(randIndex));
       } else {
-        addAttempts --;
         System.out.println("row2: " + row);
         System.out.println("col2: " + col);
         while (addAttempts > 0){
