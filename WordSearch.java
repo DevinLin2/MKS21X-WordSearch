@@ -142,23 +142,34 @@ public class WordSearch{
     return true;
   }
   public void addAllWords(){
-    randgen = new Random();
-    int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
-    System.out.println(randIndex);
-    int rowIncrement = randgen.nextInt() % 2;
-    int colIncrement = randgen.nextInt() % 2;
-    int row = Math.abs(randgen.nextInt() % data.length);
-    int col = Math.abs(randgen.nextInt() % data[0].length);
-    int addAttempts = 20;
+    randgen = new Random(seed);
+    //System.out.println(rowIncrement);
+    //System.out.println(colIncrement);
+    int addAttempts = 50;
+    //System.out.println("row: " + row);
+    //System.out.println("col: " + col);
     while (addAttempts > 0 && wordsToAdd.size() > 0){ //remember that addwords retruns a boolean
+      //System.out.println("wordsToAdd.size(): " + wordsToAdd.size());
+      int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
       String value = wordsToAdd.get(randIndex);
+      int row = Math.abs(randgen.nextInt() % data.length);
+      int col = Math.abs(randgen.nextInt() % data[0].length);
+      int rowIncrement = randgen.nextInt() % 2;
+      int colIncrement = randgen.nextInt() % 2;
       if (addWord(value, row, col, rowIncrement, colIncrement)){
-        addAttempts = 20;
+        addAttempts = 50;
         wordsAdded.add(wordsToAdd.remove(randIndex));
-        randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
       } else {
         addAttempts --;
-        addWord(value, row + randgen.nextInt() % 2, col + randgen.nextInt() % 2, rowIncrement, colIncrement);
+        System.out.println("row2: " + row);
+        System.out.println("col2: " + col);
+        while (addAttempts > 0){
+          System.out.println(row + randgen.nextInt()%2);
+          System.out.println(col + randgen.nextInt()%2);
+          if (addWord(value, row + randgen.nextInt() % 2, col + randgen.nextInt() % 2, rowIncrement, colIncrement) == false){
+            addAttempts --;
+          }
+        }
       }
     }
   }
