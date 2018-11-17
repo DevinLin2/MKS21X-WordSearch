@@ -81,6 +81,7 @@ public class WordSearch{
   */
   public String toString(){
     String s = "";
+    int maxIndex = wordsToAdd.size();
     for (int row = 0;row<data.length;row++){
       s += "|";
       for (int col=0;col<data[row].length;col++){
@@ -89,7 +90,10 @@ public class WordSearch{
       s = s + "|" + "\n";
     }
     for (int i = 0; i < wordsAdded.size(); i++){
-      s = s + wordsAdded.get(i) + ",";
+      s = s + wordsAdded.get(i);
+      if (i < wordsAdded.size() - 1){
+        s += ",";
+      }
     }
     return s;
   }
@@ -120,9 +124,7 @@ public class WordSearch{
       return false;
     }
     for (int i = 0; i < word.length(); i++){
-      System.out.println("rowIndex: " + rowIndex);
-      System.out.println("colIndex: " + columnIndex);
-      if (data[rowIndex][columnIndex] == '_' || Character.toString(data[rowIndex][columnIndex]).equals(word.substring(i,i + 1))){
+      if (rowIndex < data.length && columnIndex < data[rowIndex].length && (data[rowIndex][columnIndex] == '_' || Character.toString(data[rowIndex][columnIndex]).equals(word.substring(i,i + 1)))){
         addOrNo = true;
         rowIndex += rowIncrement;
         columnIndex += colIncrement;
@@ -146,22 +148,22 @@ public class WordSearch{
   public void addAllWords(){
     randgen = new Random(seed);
     int addAttempts = 50;
-    while (wordsToAdd.size() > 0){ //remember that addwords retruns a boolean
-      int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
-      String value = wordsToAdd.get(randIndex);
-      int row = Math.abs(randgen.nextInt() % data.length) - 1;
-      int col = Math.abs(randgen.nextInt() % data[0].length) - 1;
+    int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
+    String value = wordsToAdd.get(randIndex);
+    while (wordsToAdd.size() > 0 && addAttempts > 0){
+      int row = Math.abs(randgen.nextInt() % (data.length - 1));
+      int col = Math.abs(randgen.nextInt() % (data[0].length - 1));
       int rowIncrement = randgen.nextInt() % 2;
       int colIncrement = randgen.nextInt() % 2;
       if (addWord(value, row, col, rowIncrement, colIncrement)){
         addAttempts = 50;
         wordsAdded.add(wordsToAdd.remove(randIndex));
-      } else {
-        while (addAttempts > 0){
-          if (addWord(value, row + Math.abs(randgen.nextInt() % 2), col + Math.abs(randgen.nextInt() % 2), rowIncrement, colIncrement) == false){
-            addAttempts --;
-          }
+        if (wordsToAdd.size() != 0){
+          randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
+          value = wordsToAdd.get(randIndex);
         }
+      } else {
+        addAttempts --;
       }
     }
   }
