@@ -14,44 +14,50 @@ public class WordSearch{
   private ArrayList<String> wordsToAdd;
   //all words that were successfully added get moved into wordsAdded.
   private ArrayList<String> wordsAdded;
+  //whether or not to print answer key
+  private boolean key;
+  public static void main(String[] args){
+    Random randgen = new Random();
+    int row = 0;
+    int col = 0;
+    String fileName = "";
+    int randSeed = 0;
+    boolean answer = false;
+    if (args.length < 3){
+      System.out.println("Pass in at least three arguments in the order [rows, cols, filename, [seed], [key]] \n Seed and key are optional.");
+      System.exit(1);
+    }
+    if (args.length >= 3){ // add checks!!!!!!
+      row = Integer.parseInt(args[0]);
+      col = Integer.parseInt(args[1]);
+      fileName = args[2];
+      if (args.length == 4){
+        randSeed = Integer.parseInt(args[3]);
+      } else {
+        randSeed = randgen.nextInt();
+      }
+      if (args.length == 5 && args[4].equals("key")){
+        answer = true;
+      }
+    }
+    WordSearch foo = new WordSearch(row, col, fileName, randSeed, answer);
+    System.out.println(foo);
+  }
   /**Initialize the grid to the size specified
   *and fill all of the positions with '_'
   *@param row is the starting height of the WordSearch
   *@param col is the starting width of the WordSearch
   *@param fileName is the file from which we are reading the words from
   */
-  public WordSearch(int rows, int cols, String fileName){
+  public WordSearch(int rows, int cols, String fileName, int randSeed, boolean answer){
     try {
       File f = new File(fileName);
       Scanner in = new Scanner(f);
       String word = "";
-      randgen = new Random();
-      seed = Math.abs(randgen.nextInt() % 10000);
+      seed = Math.abs(randSeed % 10000);
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
-      while(in.hasNext()){
-        word = in.next();
-        wordsToAdd.add(word);
-      }
-      data = new char[rows][cols];
-      for (int row = 0; row < data.length;row++){
-        for (int col = 0; col < data[row].length;col++){
-          data[row][col]='_';
-        }
-      }
-      //addAllWords();
-    } catch (FileNotFoundException e){
-      System.out.println("file not found");
-    }
-  }
-  public WordSearch(int rows, int cols, String fileName, int randSeed){
-    try {
-      File f = new File(fileName);
-      Scanner in = new Scanner(f);
-      String word = "";
-      seed = randSeed % 10000;
-      wordsToAdd = new ArrayList<String>();
-      wordsAdded = new ArrayList<String>();
+      key = answer;
       while(in.hasNext()){
         word = in.next();
         wordsToAdd.add(word);
@@ -95,6 +101,7 @@ public class WordSearch{
         s += ",";
       }
     }
+    s = s + "\n" + "seed: " + seed;
     return s;
   }
   /**Attempts to add a given word to the specified position of the WordGrid.
@@ -110,7 +117,7 @@ public class WordSearch{
   *        false when: the word doesn't fit, OR  rowchange and colchange are both 0,
   *        OR there are overlapping letters that do not match
   */
-  public boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
+  private boolean addWord(String word,int row, int col, int rowIncrement, int colIncrement){
     int columnIndex = col;
     int rowIndex = row;
     boolean addOrNo = false;
@@ -145,7 +152,7 @@ public class WordSearch{
     }
     return true;
   }
-  public void addAllWords(){
+  private void addAllWords(){
     randgen = new Random(seed);
     int addAttempts = 50;
     int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
