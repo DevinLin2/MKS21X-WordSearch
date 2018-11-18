@@ -31,7 +31,7 @@ public class WordSearch{
       row = Integer.parseInt(args[0]);
       col = Integer.parseInt(args[1]);
       fileName = args[2];
-      if (args.length == 4){
+      if (args.length >= 4){
         randSeed = Integer.parseInt(args[3]);
       } else {
         randSeed = randgen.nextInt();
@@ -54,10 +54,10 @@ public class WordSearch{
       File f = new File(fileName);
       Scanner in = new Scanner(f);
       String word = "";
+      key = answer;
       seed = Math.abs(randSeed % 10000);
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
-      key = answer;
       while(in.hasNext()){
         word = in.next();
         wordsToAdd.add(word);
@@ -182,10 +182,11 @@ public class WordSearch{
     }
   }
   private void fillInLetters(){
+    randgen = new Random();
     for (int row = 0; row < data.length; row++){
       for (int col = 0; col < data[0].length; col++){
         if (data[row][col] == '_'){
-          data[row][col] = 'A' + 3;
+          data[row][col] = (char) (65 + Math.abs(randgen.nextInt() % 27));
         }
       }
     }
