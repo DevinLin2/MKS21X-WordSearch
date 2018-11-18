@@ -27,7 +27,7 @@ public class WordSearch{
       System.out.println("Pass in at least three arguments in the order [rows, cols, filename, [seed], [key]] \n Seed and key are optional.");
       System.exit(1);
     }
-    if (args.length >= 3){ // add checks!!!!!!
+    if (args.length >= 3){ // add checks!!!!!! such as out of order arguments (row col filename key) <--- wrong!!
       row = Integer.parseInt(args[0]);
       col = Integer.parseInt(args[1]);
       fileName = args[2];
@@ -69,6 +69,9 @@ public class WordSearch{
         }
       }
       addAllWords();
+      if (!(key)){
+        fillInLetters();
+      }
     } catch (FileNotFoundException e){
       System.out.println("file not found");
     }
@@ -91,7 +94,11 @@ public class WordSearch{
     for (int row = 0;row<data.length;row++){
       s += "|";
       for (int col=0;col<data[row].length;col++){
-        s = s + data[row][col] + " ";
+        if (key && data[row][col] == '_'){
+          s = s + "  ";
+        } else {
+          s = s + data[row][col] + " ";
+        }
       }
       s = s + "|" + "\n";
     }
@@ -101,7 +108,7 @@ public class WordSearch{
         s += ",";
       }
     }
-    s = s + "\n" + "seed: " + seed;
+    s = s + "\nseed: " + seed;
     return s;
   }
   /**Attempts to add a given word to the specified position of the WordGrid.
@@ -171,6 +178,15 @@ public class WordSearch{
         }
       } else {
         addAttempts --;
+      }
+    }
+  }
+  private void fillInLetters(){
+    for (int row = 0; row < data.length; row++){
+      for (int col = 0; col < data[0].length; col++){
+        if (data[row][col] == '_'){
+          data[row][col] = 'A' + 3;
+        }
       }
     }
   }
