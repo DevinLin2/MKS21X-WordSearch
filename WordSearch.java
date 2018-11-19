@@ -122,13 +122,14 @@ public class WordSearch{
       }
       s = s + "|" + "\n";
     }
+    s = s + "\nWords:";
     for (int i = 0; i < wordsAdded.size(); i++){
-      s = s + wordsAdded.get(i);
+      s = s + " " + wordsAdded.get(i);
       if (i < wordsAdded.size() - 1){
         s += ",";
       }
     }
-    s = s + "\nSeed: " + seed;
+    s = s + "\n(Seed: " + seed + ")";
     return s;
   }
   /**Attempts to add a given word to the specified position of the WordGrid.
