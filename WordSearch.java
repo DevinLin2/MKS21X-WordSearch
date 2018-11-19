@@ -24,20 +24,36 @@ public class WordSearch{
     int randSeed = 0;
     boolean answer = false;
     if (args.length < 3){
-      System.out.println("Pass in at least three arguments in the order [rows, cols, filename, [seed], [key]] \n Seed and key are optional.");
+      System.out.println("Pass in at least three arguments in the order [rows, cols, fileName, [seed], [key]] \nSeed and key are optional.");
       System.exit(1);
     }
     if (args.length >= 3){ // add checks!!!!!! such as out of order arguments (row col filename key) <--- wrong!!
       row = Integer.parseInt(args[0]);
       col = Integer.parseInt(args[1]);
       fileName = args[2];
+      if (row <= 0 || col <= 0){
+        System.out.println("Enter valid arguments");
+        System.exit(1);
+      }
       if (args.length >= 4){
         randSeed = Integer.parseInt(args[3]);
+        if (randSeed < 0){
+          System.out.println("Enter a positive int");
+          System.exit(1);
+        }
+        if (randSeed > 10000){
+          System.out.println("You have gone out of bounds for a valid seed \nEnter a positive int from 0 to 10,000 inclusive");
+          System.exit(1);
+        }
       } else {
         randSeed = randgen.nextInt();
       }
       if (args.length == 5 && args[4].equals("key")){
         answer = true;
+      } else {
+        if (args.length == 5){
+          System.out.println("If you wish to have the answer key, pass in the argument \"key\" instead of \"" + args[4] + "\"");
+        }
       }
     }
     WordSearch foo = new WordSearch(row, col, fileName, randSeed, answer);
@@ -55,7 +71,7 @@ public class WordSearch{
       Scanner in = new Scanner(f);
       String word = "";
       key = answer;
-      seed = Math.abs(randSeed % 10000);
+      seed = Math.abs(randSeed % 10001);
       wordsToAdd = new ArrayList<String>();
       wordsAdded = new ArrayList<String>();
       while(in.hasNext()){
@@ -73,7 +89,8 @@ public class WordSearch{
         fillInLetters();
       }
     } catch (FileNotFoundException e){
-      System.out.println("file not found");
+      System.out.println("File not found");
+      System.exit(1);
     }
   }
   /**Set all values in the WordSearch to underscores'_'*/
@@ -91,13 +108,16 @@ public class WordSearch{
   public String toString(){
     String s = "";
     int maxIndex = wordsToAdd.size();
-    for (int row = 0;row<data.length;row++){
+    for (int row = 0; row < data.length; row++){
       s += "|";
-      for (int col=0;col<data[row].length;col++){
+      for (int col=0; col < data[row].length; col++){
         if (key && data[row][col] == '_'){
           s = s + "  ";
         } else {
-          s = s + data[row][col] + " ";
+          s = s + data[row][col];
+          if (key || col < data[0].length - 1){
+            s += " ";
+          }
         }
       }
       s = s + "|" + "\n";
@@ -108,7 +128,7 @@ public class WordSearch{
         s += ",";
       }
     }
-    s = s + "\nseed: " + seed;
+    s = s + "\nSeed: " + seed;
     return s;
   }
   /**Attempts to add a given word to the specified position of the WordGrid.
@@ -186,7 +206,7 @@ public class WordSearch{
     for (int row = 0; row < data.length; row++){
       for (int col = 0; col < data[0].length; col++){
         if (data[row][col] == '_'){
-          data[row][col] = (char) (65 + Math.abs(randgen.nextInt() % 27));
+          data[row][col] = (char) (65 + Math.abs(randgen.nextInt() % 26));
         }
       }
     }
