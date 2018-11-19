@@ -182,7 +182,7 @@ public class WordSearch{
   }
   private void addAllWords(){
     randgen = new Random(seed);
-    int addAttempts = 50;
+    int addAttempts = 600;
     int randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
     String value = wordsToAdd.get(randIndex);
     while (wordsToAdd.size() > 0 && addAttempts > 0){
@@ -191,7 +191,7 @@ public class WordSearch{
       int rowIncrement = randgen.nextInt() % 2;
       int colIncrement = randgen.nextInt() % 2;
       if (addWord(value, row, col, rowIncrement, colIncrement)){
-        addAttempts = 50;
+        addAttempts = 600;
         wordsAdded.add(wordsToAdd.remove(randIndex));
         if (wordsToAdd.size() != 0){
           randIndex = Math.abs(randgen.nextInt() % wordsToAdd.size());
